@@ -186,6 +186,8 @@ public class MainActivity extends AppCompatActivity {
     public  void actualizar(){
         lista.clear();
         listar();
+        arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, datos);
+        listViewcliente.setAdapter(arrayAdapter);
         arrayAdapter.notifyDataSetChanged();
     }
 
