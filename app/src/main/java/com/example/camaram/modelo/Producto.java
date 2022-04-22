@@ -1,6 +1,10 @@
 package com.example.camaram.modelo;
 
 import android.content.Context;
+import android.database.Cursor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Producto {
 
@@ -24,6 +28,11 @@ public class Producto {
         this.imagen = imagen;
     }
 
+    private List<Producto> lista=new ArrayList<>();
+
+    public Producto() {
+    }
+
     public void guardar(Context context) {
         DbHelper db = new DbHelper(context);
         System.out.println("hola");
@@ -36,20 +45,42 @@ public class Producto {
 
     public void Editar(Context context) {
         DbHelper db = new DbHelper(context);
-        String noSql = "UPDATE producto set nombre= ' "+getNombre()+"', descripcion= '"+getDescripcion()+"'"
-                + "', costo= "+getCosto()+", precio= "+getPrecio()+", stock= "+getStock()+ ",fecha= '"+getFecha()+ "' where codigo="+getCodigo()+";";
+      /*  String noSql = "UPDATE producto set nombre= ' "+getNombre()+"', descripcion= '"+getDescripcion()
+                + "', costo= "+getCosto()+", precio= "+getPrecio()+", stock= "+getStock()+ " where id="+getCodigo()+";";*/
+
+       String noSql = "UPDATE producto set nombre= ' "+getNombre()+"', descripcion= '"+getDescripcion()
+                + "', costo= "+getCosto()+", precio= "+getPrecio()+", stock= "+getStock()+ ", fecha= '"+getFecha()+ " '  where id="+getCodigo()+";";
         db.noQuery(noSql);
         db.close();
     }
 
     public void eliminar(Context context){
         DbHelper db = new DbHelper(context);
-        String noSql = "DELETE FROM producto where codigo= "+getCodigo();
+        String noSql = "DELETE FROM producto where id= "+getCodigo();
         db.noQuery(noSql);
         db.close();
 
     }
 
+
+
+    public List<Producto> listar(Context context) {
+        DbHelper db = new DbHelper(context);
+        String sql = "SELECT * FROM producto";
+        Cursor cursor = db.query(sql);
+        while(cursor.moveToNext()){
+            Producto p=new Producto();
+            p.setCodigo(cursor.getInt(0));
+            p.setNombre(cursor.getString(1));
+            p.setDescripcion(cursor.getString(2));
+            p.setCosto(cursor.getDouble(4));
+            p.setPrecio(cursor.getDouble(3));
+            p.setStock(cursor.getInt(5));
+            p.setFecha(cursor.getString(6));
+            lista.add(p);
+        }
+        return lista;
+    }
 
 
     public int getCodigo() {
@@ -69,6 +100,7 @@ public class Producto {
     }
 
     public String getDescripcion() {
+
         return descripcion;
     }
 
