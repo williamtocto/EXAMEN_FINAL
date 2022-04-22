@@ -32,9 +32,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        progressBar=(ProgressBar) findViewById(R.id.progressBar);
+
         ImageButton buttonCamara=findViewById(R.id.buttonCamara);
-        progressBar.setVisibility(View.INVISIBLE);
         new Hilo1().start();
 
 
@@ -129,7 +128,6 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
             } catch (InterruptedException e) {
@@ -159,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
             product.Editar(MainActivity.this);
             Toast.makeText(getApplicationContext(), "Producto Editar".toString(), Toast.LENGTH_LONG).show();
         }
+        actualizar();
     }
 
 
@@ -167,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
         product.setCodigo(Integer.parseInt(id.getText().toString()));
         product.eliminar(MainActivity.this);
         Toast.makeText(getApplicationContext(), "Producto Eliminado".toString(), Toast.LENGTH_LONG).show();
+        actualizar();
 
     }
 
@@ -181,6 +181,16 @@ public class MainActivity extends AppCompatActivity {
                     lista.get(i).getStock()+" FECHA: "+lista.get(i).getFecha());
         }
     }
+
+
+    public  void actualizar(){
+        lista.clear();
+        listar();
+        arrayAdapter.notifyDataSetChanged();
+    }
+
+
+
 
 
 
